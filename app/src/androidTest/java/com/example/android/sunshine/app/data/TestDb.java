@@ -149,7 +149,7 @@ public class TestDb extends AndroidTestCase {
         also make use of the validateCurrentRecord function from within TestUtilities.
      */
     public void testWeatherTable() {
-        // First insert the location, and then use the locationRowId to insert
+        // First insert the location, and then use the locationRowId to insertí
         // the weather. Make sure to cover as many failure cases as you can.
         // We return the locationRowId of the inserted location in testLocationTable, so
         // you should just call that function rather than rewriting it
