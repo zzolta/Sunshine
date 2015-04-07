@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 import com.example.android.sunshine.app.data.WeatherContract;
+import com.example.android.sunshine.app.data.WeatherContract.WeatherEntry;
 
 /**
  * {@link ForecastAdapter} exposes a list of weather forecasts
@@ -78,7 +79,16 @@ public class ForecastAdapter extends CursorAdapter {
     @Override
     public void bindView(View view, Context context, Cursor cursor) {
         ViewHolder viewHolder = (ViewHolder) view.getTag();
-        viewHolder.iconView.setImageResource(R.drawable.ic_launcher);
+
+        int itemViewType = getItemViewType(cursor.getPosition());
+        int cursorInt = cursor.getInt(cursor.getColumnIndex(WeatherEntry.COLUMN_WEATHER_ID));
+        int resourceId = -1;
+        if (itemViewType == VIEW_TYPE_TODAY) {
+            resourceId = Utility.getArtResourceForWeatherCondition(cursorInt);
+        } else if (itemViewType == VIEW_TYPE_FUTURE_DAY) {
+            resourceId = Utility.getIconResourceForWeatherCondition(cursorInt);
+        }
+        viewHolder.iconView.setImageResource(resourceId);
 
         viewHolder.dateView.setText(Utility.getFriendlyDayString(context, cursor.getLong(ForecastFragment.COL_WEATHER_DATE)));
 

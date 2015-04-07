@@ -20,6 +20,7 @@ import com.example.android.sunshine.app.data.WeatherContract.WeatherEntry;
  */
 public class DetailFragment extends Fragment implements LoaderCallbacks<Cursor> {
 
+    public static final int COL_WEATHER_CONDITION_ID = 9;
     private static final String LOG_TAG = DetailFragment.class.getSimpleName();
     private static final String FORECAST_SHARE_HASHTAG = " #SunshineApp";
     private static final int DETAIL_LOADER = 0;
@@ -32,9 +33,9 @@ public class DetailFragment extends Fragment implements LoaderCallbacks<Cursor> 
                                                        WeatherEntry.COLUMN_HUMIDITY,
                                                        WeatherEntry.COLUMN_PRESSURE,
                                                        WeatherEntry.COLUMN_WIND_SPEED,
-                                                       WeatherEntry.COLUMN_DEGREES
+                                                       WeatherEntry.COLUMN_DEGREES,
+                                                       WeatherEntry.COLUMN_WEATHER_ID
     };
-
     // these constants correspond to the projection defined above, and must change if the
     // projection changes
     private static final int COL_WEATHER_ID = 0;
@@ -46,7 +47,6 @@ public class DetailFragment extends Fragment implements LoaderCallbacks<Cursor> 
     private static final int COL_WEATHER_PRESSURE = 6;
     private static final int COL_WEATHER_WIND_SPEED = 7;
     private static final int COL_WEATHER_DEGREES = 8;
-
     private String mForecast;
     private ShareActionProvider mShareActionProvider;
 
@@ -132,7 +132,8 @@ public class DetailFragment extends Fragment implements LoaderCallbacks<Cursor> 
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
         if (data != null && data.moveToFirst()) {
-            mIconView.setImageResource(R.drawable.ic_launcher);
+
+            mIconView.setImageResource(Utility.getArtResourceForWeatherCondition(data.getInt(COL_WEATHER_CONDITION_ID)));
 
             long date = data.getLong(COL_WEATHER_DATE);
             String friendlyDateText = Utility.getDayName(getActivity(), date);
